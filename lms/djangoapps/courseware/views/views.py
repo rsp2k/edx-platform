@@ -785,22 +785,112 @@ def program_marketing(request, program_uuid):
     """
     Display the program marketing page.
     """
-    program_data = get_programs(request.site, uuid=program_uuid)
+    # program_data = get_programs(request.site, uuid=program_uuid)
 
-    if not program_data:
-        raise Http404
+    # if not program_data:
+    #     raise Http404
 
-    program = ProgramMarketingDataExtender(program_data, request.user).extend()
-    program['type_slug'] = slugify(program['type'])
-    skus = program.get('skus')
-    ecommerce_service = EcommerceService()
+    # program = ProgramMarketingDataExtender(program_data, request.user).extend()
+    # program['type_slug'] = slugify(program['type'])
+    # skus = program.get('skus')
+    # ecommerce_service = EcommerceService()
 
-    context = {'program': program}
+    # context = {'program': program}
 
-    if program.get('is_learner_eligible_for_one_click_purchase') and skus:
-        context['buy_button_href'] = ecommerce_service.get_checkout_page_url(*skus)
+    # if program.get('is_learner_eligible_for_one_click_purchase') and skus:
+    #     context['buy_button_href'] = ecommerce_service.get_checkout_page_url(*skus)
+    context = {
+        'uses_bootstrap': True,
+        'program':{
+            'faq': [
+                {
+                    'question': 'Yes?',
+                    'answer': 'Yes'
+                },
+                {
+                    'question': 'No?',
+                    'answer': 'No'
+                }
+            ],
+            'type': 'Professional Certificate',
+            'type_slug': '',
+            'title': 'Program Page 2',
+            'subtitle':'Electric Boogaloo',
+            'status':'',
+            'overview':'This is an overview',
+            'weeks_to_complete':'7',
+            'job_outlook_items':['One','Two','Four'],
+            'full_program_price': 8.00,
+            'expected_learning_items':['Chocolate', 'Banana', 'Frank'],
+            'min_hours_effort_per_week':7,
+            'max_hours_effort_per_week':9,
+            'video':{
+                'src':'https://www.youtube.com/watch?v=yDv5FIAeyoY'
+            },
+            'buy_button_href':'http://shopping.google.com',
+            'banner_image':{
+                'large':{
+                    'url':'http://via.placeholder.com/350x150'
+                }
+            },
+            'is_learner_eligible_for_one_click_purchase': False,
+            'discount_data':{
+                'is_discounted':False,
+                'total_incl_tax_excl_discounts': 150.00,
+                'discount_value': '14%',
+                'currency':'USD'
+            },
+            'authoring_organizations':[
+                {
+                    'name': 'Fenwick',
+                    'logo_image_url':''
+                }
+            ],
+            'individual_endorsements':[
+                {
+                    'quote':'Horseshoes and hand grenades',
+                    'endorser': {
+                        'given_name': 'Jack Johnson',
+                        'position':{
+                            'title':'Captain',
+                            'organization_name': 'Black Pearl'
+                        },
+                        'profile_image':{
+                            'medium':{
+                                'url':'http://via.placeholder.com/350x150'
+                            }
+                        },
+                    }
+                }
+            ],
+            'courses':[
+                {
+                    'title':'Holy Cow! It\'s a course!',
+                    'course_runs':[
+                        {
+                            'key':'',
+                            'pacing_type': 'instructor_paced',
+                            'short_description':'Short description of course run',
+                            'start': '2017-11-05T05:04:03Z'
+                        }
+                    ]
+                }
+            ],
+            'instructors':[
+                {
+                    'name':'Jsohn Smith',
+                    'image':'http://via.placeholder.com/350x150',
+                    'bio': 'Avid dog lover',
+                    'position':{
+                        'organization_name':'MIT',
+                        'position':'Head of programs'
+                    }
+                }
+            ]
+        }
+    }
 
-    return render_to_response('courseware/program_marketing.html', context)
+    return render_to_response('courseware/program_marketing_new.html', context)
 
 
 @transaction.non_atomic_requests

@@ -1,0 +1,86 @@
+<%page expression_filter="h"/>
+<%inherit file="../main.html"/>
+<%!
+from datetime import datetime
+
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+from mako import exceptions
+
+from openedx.core.djangolib.markup import HTML, Text
+%>
+
+<%namespace name='static' file='../static_content.html'/>
+
+<%
+faq = program['faq']
+program_type = program['type']
+program_type_slug = program['type_slug']
+title = program['title']
+status = program['status']
+courses = program['courses']
+subtitle = program['subtitle']
+overview = program['overview']
+instructors = program['instructors']
+job_outlook_items = program['job_outlook_items']
+weeks_to_complete = program['weeks_to_complete']
+full_program_price_format = '{0:.0f}' if program['full_program_price'].is_integer() else '{0:.2f}'
+full_program_price = full_program_price_format.format(program['full_program_price'])
+endorsement = program['individual_endorsements'][0] if program['individual_endorsements'] else {}
+endorsement_quote = endorsement.get('quote', '')
+endorser = endorsement.get('endorser', {})
+endorsement_image = endorser.get('profile_image', {}).get('medium', {}).get('url', '')
+endorsement_name = endorser.get('given_name', '')
+endorsement_position = (endorser.get('position') or {}).get('title', '')
+endorsement_organization = (endorser.get('position') or {}).get('organization_name', '')
+expected_learning_items = program['expected_learning_items']
+authoring_organizations = program['authoring_organizations']
+min_hours_effort_per_week = program['min_hours_effort_per_week']
+max_hours_effort_per_week = program['max_hours_effort_per_week']
+video_url = (program.get('video', {}) or {}).get('src', '')
+banner_image = program.get('banner_image', {}).get('large', {}).get('url', '')
+description_max_length = 250
+%>
+
+<%static:css group='style-main-v2'/>
+<%static:css group='style-learner-dashboard'/>
+
+<%block name="js_extra">
+  <script src="${static.url('js/slick.min.js')}"></script>
+  <script src="${static.url('js/leanModal.js')}"></script>
+  <script src="${static.url('js/program_marketing.js')}"></script>
+</%block>
+<%block name="pagetitle">${program['title']}</%block>
+<div id="program-details-page">
+  <div class="main-banner" style="background: #000 url(${banner_image}) no-repeat center center / cover;">
+    <div class="grid-manual">
+      <div class="row">
+        <div class="col col-12 md-col-8 lg-col-9">
+          <div class="org-logo">
+            % if authoring_organizations and authoring_organizations[0]['logo_image_url']:
+              <img src="${authoring_organizations[0]['logo_image_url']}" alt="${authoring_organizations[0]['name']}">
+            % endif
+          </div>
+          <h1 class="banner-title">${title}</h1>
+          <p class="banner-description">${subtitle}</p>
+          % if program.get('is_learner_eligible_for_one_click_purchase'):
+            <a href="${buy_button_href}" class="btn-brand btn-large btn-start">
+              ${_('Purchase the Program')}
+            </a>
+          % else:
+            <a href="#courses" class="btn-brand btn-large btn-start">
+              ${_('Start Learning')}
+            </a>
+          % endif
+        </div>        
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <ul class="col-wrapper page-nav">
+        <li class="col col-4">View Courses</li>
+        <li class="col col-4">Meet the Instructors</li>
+        <li class="col col-4">The Professional Certificate</li>
+      </div>
+  </div>
+</div>
