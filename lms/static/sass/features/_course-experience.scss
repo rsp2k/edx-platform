@@ -3,9 +3,12 @@
 
 // Course call to action message
 .course-message {
+  display: flex;
+
   .message-author {
     display: inline-block;
     width: 70px;
+    height: 70px;
     border-radius: $baseline*7/4;
     border: 1px solid $lms-border-color;
 
