@@ -25,3 +25,6 @@ $theme-colors: map-merge((
   light: $gray-100,
   dark: $gray-800
 ), $theme-colors);
+
+// Why is this necessary?
+$link-color: $red;

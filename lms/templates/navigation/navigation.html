@@ -57,9 +57,9 @@ site_status_msg = get_site_status_msg(course_id)
         <span class="navbar-toggler-icon"></span>
       </button>
       % if user.is_authenticated():
-        <%include file="bootstrap/navbar-authenticated.html" args="online_help_token=online_help_token"/>
+        <%include file="navbar-authenticated.html" args="online_help_token=online_help_token"/>
       % else:
-        <%include file="bootstrap/navbar-not-authenticated.html" args="online_help_token=online_help_token"/>
+        <%include file="navbar-not-authenticated.html" args="online_help_token=online_help_token"/>
       % endif
     </nav>
   </header>
