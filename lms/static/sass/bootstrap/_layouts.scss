@@ -69,11 +69,13 @@
 
   .page-content-main {
     flex-grow: 1;  // This column should consume all the available space
-    min-width: 500px;
   }
 
   .page-content-secondary {
     width: 350px;
-    margin-left: $baseline;
+
+    @include media-breakpoint-up(md) {
+      margin-left: $baseline;
+    }
   }
 }
