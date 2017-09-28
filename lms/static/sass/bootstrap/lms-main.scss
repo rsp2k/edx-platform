@@ -7,6 +7,9 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap/scss/mixins';
 
+// Legacy support
+@import 'legacy';
+
 // Variables
 @import 'variables';
 
@@ -15,3 +18,11 @@
 @import 'navigation';
 @import 'layouts';
 @import 'components';
+@import 'course/layout/courseware_preview';
+
+// Features
+@import 'features/bookmarks';
+@import 'features/course-experience';
+@import 'features/course-search';
+@import 'features/course-sock';
+@import 'features/course-upgrade-message';

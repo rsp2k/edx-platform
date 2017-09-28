@@ -36,6 +36,9 @@ SHOW_UPGRADE_MSG_ON_COURSE_HOME = CourseWaffleFlag(WAFFLE_FLAG_NAMESPACE, 'show_
 #   flag even for Superusers.
 LATEST_UPDATE_FLAG = CourseWaffleFlag(WAFFLE_FLAG_NAMESPACE, 'latest_update')
 
+# Waffle flag to enable the use of Bootstrap for course experience pages
+USE_BOOTSTRAP_FLAG = CourseWaffleFlag(WAFFLE_FLAG_NAMESPACE, 'use_bootstrap')
+
 
 def course_home_page_title(course):  # pylint: disable=unused-argument
     """

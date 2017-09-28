@@ -1,0 +1,44 @@
+// Custom button styles
+
+// Primary button
+.btn-primary {
+  @extend .btn-brand;
+}
+
+// Purchase button
+.btn-purchase {
+  @extend %btn;
+
+  border-color: $lms-purchase-color;
+  background: $lms-purchase-color;
+  color: palette(primary, x-back);
+  text-decoration: none;
+
+  // STATE: hover and focus
+  &:hover,
+  &.is-hovered,
+  &:focus,
+  &.is-focused {
+    border-color: $lms-purchase-color-hover;
+    background: $lms-purchase-color-hover;
+    text-decoration: none;
+  }
+
+  // STATE: is pressed or active
+  &:active,
+  &.is-pressed,
+  &.is-active {
+    border-color: $lms-purchase-color-hover;
+    background: $lms-purchase-color-hover;
+    text-decoration: none;
+  }
+
+  // STATE: is disabled
+  &:disabled,
+  &.is-disabled {
+    border-color: theme-color("disabled");
+    background: theme-color("disabled");
+    color: theme-color("dark");
+    text-decoration: none;
+  }
+}
