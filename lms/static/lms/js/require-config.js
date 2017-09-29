@@ -100,6 +100,7 @@
             'string_utils': 'js/src/string_utils',
             'utility': 'js/src/utility',
             'draggabilly': 'js/vendor/draggabilly',
+            'which-country': 'common/js/vendor/which-country',
 
             // Files needed by OVA
             'annotator': 'js/vendor/ova/annotator-full',

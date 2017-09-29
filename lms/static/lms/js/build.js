@@ -34,6 +34,7 @@
             'js/header_factory',
             'js/learner_dashboard/unenrollment_factory',
             'js/learner_dashboard/program_details_factory',
+            'js/currency/currency_factory',
             'js/learner_dashboard/program_list_factory',
             'js/student_account/logistration_factory',
             'js/student_account/views/account_settings_factory',
@@ -84,6 +85,7 @@
             'URI': 'empty:',
             'common/js/discussion/views/discussion_inline_view': 'empty:',
             'modernizr': 'empty',
+            'which-country': 'empty',
 
             // Don't bundle UI Toolkit helpers as they are loaded into the "edx" namespace
             'edx-ui-toolkit/js/utils/html-utils': 'empty:',
