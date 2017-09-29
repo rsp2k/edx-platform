@@ -801,6 +801,7 @@ def program_marketing(request, program_uuid):
     #     context['buy_button_href'] = ecommerce_service.get_checkout_page_url(*skus)
     context = {
         'uses_bootstrap': True,
+        'buy_button_href':'http://shopping.google.com',
         'program':{
             'faq': [
                 {
@@ -814,26 +815,47 @@ def program_marketing(request, program_uuid):
             ],
             'type': 'Professional Certificate',
             'type_slug': '',
-            'title': 'Program Page 2',
+            'title': 'An Example Program',
             'subtitle':'Electric Boogaloo',
             'status':'',
-            'overview':'This is an overview',
+            'overview':"""
+                <p>Enrollment to this program is currently open. The program runs from September 11, 2017 - March 19, 2018.</p> <p> To receive information about future program offerings, please email us at MITxPRO@mit.edu.</p> <p>As the pace of innovation accelerates, engineers around the world are tasked with designing,  managing, and optimizing increasingly complex systems. <strong>Employing industry case studies</strong> and the latest in systems thinking from MIT, this four-course online certificate program explores models and methods in systems engineering. You will gain a  knowledge base in complex systems, analysis of complex systems, and model  management that <strong>will impact how you approach and solve problems and keep  abreast of innovation.</strong> By the end of the program, <strong>you'll be able to frame  systems architecture as a series of decisions</strong>, which can be actively  sorted, managed, and optimized to suit you and your organization's needs.</p>
+                <p>The four courses in  the certificate program are: </p>
+                <ul>
+                <li>Architecture of Complex Systems</li>
+                <li>Models in Engineering</li>
+                <li>Model-Based Systems Engineering:  Documentation and Analysis</li>
+                <li>Quantitative Methods in Systems Engineering</li>
+                </ul>
+                <p>To earn a Professional Certificate, you  must complete the four courses in the program. For those who do not want to commit  to the full program, courses can be taken on an individual basis.</p>
+                <p><em>&ldquo;Advancing the  state of the art in systems engineering tools, methods, application, and  training is vital to the success of our increasingly complex systems.&rdquo;</em><br>
+                - Ralph Roe, NASA's Chief Engineer</p>
+            """,
             'weeks_to_complete':'7',
-            'job_outlook_items':['One','Two','Four'],
+            'job_outlook_items':[
+                'Accounting and Auditing industries are expanding faster than average and are expected to grow at 11% through 2024 (Source: Bureau of Labor Statistics).',
+                'In 2016, the median annual salaries for accountants and auditors with a bachelor\'s degree was $68,150 and the median annual salary for financial managers was $121,750 (Source: Bureau of Labor Statistics).',
+                'Potential career roles for people with similar training include corporate accountant, management accountant, financial manager, budget analysts, financial analysts, insurance underwriters, and loan officer.'
+            ],
             'full_program_price': 8.00,
-            'expected_learning_items':['Chocolate', 'Banana', 'Frank'],
+            'expected_learning_items':[
+                'Understand complex systems, analysis of complex systems, and model management',
+                'Frame systems architecture as a series of decisions, which can be actively sorted, managed, and optimized to suit your organization\'s need',
+                'Articulate the benefits and challenges of Model-Based Systems Engineering',
+                'Develop a comprehensive knowledge of the key aspects of systems engineering',
+                'Learn from academic and industry leaders'
+            ],
             'min_hours_effort_per_week':7,
             'max_hours_effort_per_week':9,
             'video':{
                 'src':'https://www.youtube.com/watch?v=yDv5FIAeyoY'
             },
-            'buy_button_href':'http://shopping.google.com',
             'banner_image':{
                 'large':{
-                    'url':'http://via.placeholder.com/350x150'
+                    'url':'https://dummyimage.com/350x150/7700bb&text=x'
                 }
             },
-            'is_learner_eligible_for_one_click_purchase': False,
+            'is_learner_eligible_for_one_click_purchase': True,
             'discount_data':{
                 'is_discounted':False,
                 'total_incl_tax_excl_discounts': 150.00,
@@ -843,21 +865,21 @@ def program_marketing(request, program_uuid):
             'authoring_organizations':[
                 {
                     'name': 'Fenwick',
-                    'logo_image_url':''
+                    'logo_image_url':'https://www.edx.org/sites/default/files/school/image/banner/queensland_logo_200x101_0_0.png'
                 }
             ],
             'individual_endorsements':[
                 {
-                    'quote':'Horseshoes and hand grenades',
+                    'quote':'CBS has a world-class finance program, headlined by the Corporate Finance course. I learned financial modeling, valuations, competitive analysis, leadership, and data-based management at CBS. An edX Professional Certificate in Corporate Finance in partnership with CBS would be a valuable asset to any professional.',
                     'endorser': {
-                        'given_name': 'Jack Johnson',
+                        'given_name': 'Jack Sparrow',
                         'position':{
                             'title':'Captain',
                             'organization_name': 'Black Pearl'
                         },
                         'profile_image':{
                             'medium':{
-                                'url':'http://via.placeholder.com/350x150'
+                                'url':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Pirate_Flag_of_Jack_Rackham.svg/1280px-Pirate_Flag_of_Jack_Rackham.svg.png'
                             }
                         },
                     }
@@ -868,9 +890,20 @@ def program_marketing(request, program_uuid):
                     'title':'Holy Cow! It\'s a course!',
                     'course_runs':[
                         {
-                            'key':'',
+                            'key':'abc1',
                             'pacing_type': 'instructor_paced',
                             'short_description':'Short description of course run',
+                            'start': '2017-11-05T05:04:03Z'
+                        }
+                    ]
+                },
+                {
+                    'title':'This is course #2',
+                    'course_runs':[
+                        {
+                            'key':'abc2',
+                            'pacing_type': 'instructor_paced',
+                            'short_description':'Short description of another course run',
                             'start': '2017-11-05T05:04:03Z'
                         }
                     ]
@@ -879,6 +912,15 @@ def program_marketing(request, program_uuid):
             'instructors':[
                 {
                     'name':'Jsohn Smith',
+                    'image':'http://via.placeholder.com/350x150',
+                    'bio': 'Avid dog lover',
+                    'position':{
+                        'organization_name':'MIT',
+                        'position':'Head of programs'
+                    }
+                },
+                {
+                    'name':'Jane Smith',
                     'image':'http://via.placeholder.com/350x150',
                     'bio': 'Avid dog lover',
                     'position':{
