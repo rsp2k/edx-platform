@@ -3,8 +3,6 @@ Course Goals Python API
 """
 from opaque_keys.edx.keys import CourseKey
 from django.conf import settings
-from django.utils.translation import ugettext as _
-from openedx.core.djangolib.markup import Text
 from rest_framework.reverse import reverse
 
 from .models import CourseGoal
@@ -33,9 +31,12 @@ def get_course_goal(user, course_key):
     """
     Given a user and a course_key, return their course goal.
 
-    If the user is anonymouse or a course goal does not exist, returns None.
+    If the user is anonymous or a course goal does not exist, returns None.
     """
-    course_goals = CourseGoal.objects.filter(user=user, course_key=course_key) if not user.is_anonymous() else None
+    if user.is_anonymous():
+        return None
+
+    course_goals = CourseGoal.objects.filter(user=user, course_key=course_key)
     return course_goals[0] if course_goals else None
 
 
@@ -48,40 +49,9 @@ def remove_course_goal(user, course_key):
         course_goal.delete()
 
 
-class CourseGoalOption(Enum):
+def get_goal_api(request):
     """
-    Types of goals that a user can select.
-
-    These options are set to a string goal key so that they can be
-    referenced elsewhere in the code when necessary.
-    """
-    CERTIFY = 'certify'
-    COMPLETE = 'complete'
-    EXPLORE = 'explore'
-    UNSURE = 'unsure'
-
-    @classmethod
-    def get_course_goal_keys(self):
-        return [key.value for key in self]
-
-
-def get_goal_text(goal_option):
-    """
-    This function is used to translate the course goal option into
-    a translated, user-facing string to be used to represent that
-    particular goal.
-    """
-    return {
-        CourseGoalOption.CERTIFY.value: Text(_('Earn a certificate')),
-        CourseGoalOption.COMPLETE.value: Text(_('Complete the course')),
-        CourseGoalOption.EXPLORE.value: Text(_('Explore the course')),
-        CourseGoalOption.UNSURE.value: Text(_('Not sure yet')),
-    }[goal_option]
-
-
-def get_goals_api_url(request):
-    """
-    Returns the endpoint for accessing REST Api.
+    Returns the endpoint for accessing REST API.
     """
     return reverse('course_goals_api:v0:course_goal-list', request=request)
 
@@ -100,3 +70,11 @@ def has_course_goal_permission(request, course_id, user_access):
     is_already_verified = CourseEnrollment.is_enrolled_as_verified(request.user, course_key)
     return user_access['is_enrolled'] and has_verified_mode and not is_already_verified \
         and ENABLE_COURSE_GOALS.is_enabled(course_key) and settings.FEATURES.get('ENABLE_COURSE_GOALS')
+
+
+def get_course_goal_options():
+    """
+    Returns the valid options for goal keys, mapped to their translated
+    strings, as defined by theCourseGoal model.
+    """
+    return {goal_key: goal_text for goal_key, goal_text in CourseGoal.GOAL_KEY_CHOICES}

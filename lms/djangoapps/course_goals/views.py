@@ -13,6 +13,7 @@ from rest_framework import permissions, serializers, viewsets, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 
+from .api import get_course_goal_options
 from .models import CourseGoal
 
 
@@ -54,17 +55,14 @@ class CourseGoalViewSet(viewsets.ModelViewSet):
     serializer_class = CourseGoalSerializer
 
     def create(self, post_data):
-        """
-        Create a new goal if one does not exist, otherwise
-        update the existing goal.
-        """
+        """ Create a new goal if one does not exist, otherwise update the existing goal. """
         # Ensure goal_key is valid
         goal_key = post_data.data['goal_key']
-        if goal_key not in CourseGoalOption.get_course_goal_keys():
+        if goal_key not in get_course_goal_options():
             return Response(
                 'Provided goal key, {goal_key}, is not a valid goal key (options= {goal_options}).'.format(
                     goal_key=goal_key,
-                    goal_options=[option.value for option in CourseGoalOption],
+                    goal_options=get_course_goal_options(),
                 ),
                 status=status.HTTP_400_BAD_REQUEST,
             )

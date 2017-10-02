@@ -80,7 +80,7 @@
     }
     // Course Goal Message Styling
     .success-message {
-      @include font-size(14);
+      font-size: font-size(small);
     }
 
     .goal-options-container {
@@ -160,7 +160,7 @@
       display: none;
     }
 
-    h3 {
+    .current-goal .title {
       @include float(left); // For RTL purposes
       @include margin-right($baseline/4);
     }
@@ -171,7 +171,7 @@
       cursor: pointer;
     }
 
-    i {
+    .icon {
       @include right($baseline/4);
       position: absolute;
 
@@ -190,7 +190,7 @@
     }
 
     &:hover {
-      background-color: #f9f9f9;
+      background-color: $table-bg-accent;
 
       .fa-pencil {
         display: inline;

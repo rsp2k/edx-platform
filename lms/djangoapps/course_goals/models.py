@@ -19,7 +19,7 @@ GOAL_KEY_CHOICES = Choices(
 
 class CourseGoal(models.Model):
     """
-    Represents a course goal set by the user.
+    Represents a course goal set by a user on the course home page.
     """
     user = models.ForeignKey(User, blank=False)
     course_key = CourseKeyField(max_length=255, db_index=True)

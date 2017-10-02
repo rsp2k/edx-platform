@@ -36,13 +36,16 @@ class TestCourseGoalsAPI(EventTrackingTestCase, SharedModuleStoreTestCase):
 
     def test_add_valid_goal(self):
         """ Ensures a correctly formatted post succeeds. """
-        response = self.post_course_goal(valid=True)
+        response = self.post_course_goal(valid=True, goal_key='certify')
         self.assertEqual(self.get_event(-1)['name'], EVENT_NAME_ADDED)
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(len(CourseGoal.objects.filter(user=self.user, course_key=self.course.id)), 1)
+
+        current_goals = CourseGoal.objects.filter(user=self.user, course_key=self.course.id)
+        self.assertEqual(len(current_goals), 1)
+        self.assertEqual(current_goals[0]['goal_key'], 'certify')
 
     def test_add_invalid_goal(self):
-        """ Ensures a correctly formatted post succeeds. """
+        """ Ensures an incorrectly formatted post does not succeed. """
         response = self.post_course_goal(valid=False)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(len(CourseGoal.objects.filter(user=self.user, course_key=self.course.id)), 0)
@@ -53,7 +56,10 @@ class TestCourseGoalsAPI(EventTrackingTestCase, SharedModuleStoreTestCase):
         self.post_course_goal(valid=True, goal_key='certify')
         self.post_course_goal(valid=True, goal_key='unsure')
         self.assertEqual(self.get_event(-1)['name'], EVENT_NAME_UPDATED)
-        self.assertEqual(len(CourseGoal.objects.filter(user=self.user, course_key=self.course.id)), 1)
+
+        current_goals = CourseGoal.objects.filter(user=self.user, course_key=self.course.id)
+        self.assertEqual(len(current_goals), 1)
+        self.assertEqual(current_goals[0]['goal_key'], 'unsure')
 
     def post_course_goal(self, valid=True, goal_key='certify'):
         """

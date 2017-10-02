@@ -27,7 +27,7 @@ $lms-label-color: palette(grayscale, black) !default;
 $lms-active-color: palette(primary, base) !default;
 $lms-preview-menu-color: #c8c8c8 !default;
 $lms-inactive-color: rgb(94,94,94) !default;
-$success-color: palette(success, accent) !default;
+$success-color: rgb(0, 155, 0) !default;
 $success-color-hover: palette(success, text) !default;
 
 $button-bg-hover-color: $white !default;
@@ -48,6 +48,8 @@ $light-grey-transparent: rgba(200,200,200, 0) !default;
 $light-grey-solid: rgba(200,200,200, 1) !default;
 
 $header-border-color: $gray-l1 !default;
+
+$table-bg-accent:               #f9f9f9 !default;
 
 // ----------------------------
 // #TYPOGRAPHY

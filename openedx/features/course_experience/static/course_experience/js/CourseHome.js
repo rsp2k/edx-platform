@@ -32,11 +32,11 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
 
     // Course goal edit behavior
     const $goalSelect = $('.section-goals select');
-    const $iconIndicator = $('.section-goals i');
+    const $iconIndicator = $('.section-goals .icon');
     $goalSelect.on('change', (event) => {
       // Send an ajax request to update the course goal
       const newGoalKey = $(event.target).val();
-      $iconIndicator.removeClass().addClass('fa fa-spinner fa-pulse');
+      $iconIndicator.removeClass().addClass('icon fa fa-spinner fa-pulse');
       $.ajax({
         method: 'POST',
         url: options.goalApiUrl,
@@ -48,11 +48,11 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
         },
         dataType: 'json',
         success: () => {
-          $iconIndicator.removeClass().addClass('fa fa-check');
+          $iconIndicator.removeClass().addClass('icon fa fa-check');
           $goalSelect.blur();
         },
         error: () => {
-          $iconIndicator.removeClass().addClass('fa fa-close');
+          $iconIndicator.removeClass().addClass('icon fa fa-close');
         },
       });
     });

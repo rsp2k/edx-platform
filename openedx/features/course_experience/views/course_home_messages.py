@@ -16,7 +16,7 @@ from opaque_keys.edx.keys import CourseKey
 from web_fragments.fragment import Fragment
 
 from courseware.courses import get_course_with_access
-from lms.djangoapps.course_goals.api import get_course_goal, get_goals_api, has_course_goal_permission
+from lms.djangoapps.course_goals.api import get_course_goal, get_course_goal_options, get_goal_api, has_course_goal_permission
 from openedx.core.djangoapps.plugin_api.views import EdxFragmentView
 from openedx.core.djangolib.markup import HTML, Text
 from openedx.features.course_experience import CourseHomeMessages
@@ -64,7 +64,7 @@ class CourseHomeMessageFragmentView(EdxFragmentView):
         course_home_messages = list(CourseHomeMessages.user_messages(request))
 
         # Pass in the url used to set a course goal
-        goal_api_url = get_goals_api_url(request)
+        goal_api_url = get_goal_api(request)
 
         # Grab the logo
         image_src = "course_experience/images/home_message_author.png"
@@ -133,6 +133,7 @@ def _register_course_home_messages(request, course_id, user_access, course_start
     # users that have not yet set a goal in a course that allows for
     # verified statuses.
     user_goal = get_course_goal(auth.get_user(request), course_key)
+    course_goal_options = get_course_goal_options()
     if has_course_goal_permission(request, course_id, user_access) and not user_goal:
         goal_choices_html = Text(_(
             'To start, set a course goal by selecting the option below that best describes '
@@ -147,24 +148,24 @@ def _register_course_home_messages(request, course_id, user_access, course_start
         ).format(
             initial_tag=HTML(
                 '<div tabindex="0" aria-label="{aria_label_choice}" class="goal-option dismissible" '
-                'data-choice="{goal_key}">'
+                'data-choice="unsure">'
             ).format(
-                goal_key=GOAL_KEY_CHOICES.unsure,
                 aria_label_choice=Text(_("Set goal to: {choice}")).format(
-                    choice=GOAL_KEY_CHOICES[GOAL_KEY_CHOICES.unsure]
+                    choice=course_goal_options['unsure'],
                 ),
             ),
             choice=Text(_('{choice}')).format(
-                choice=GOAL_KEY_CHOICES[GOAL_KEY_CHOICES.unsure],
+                choice=course_goal_options['unsure'],
             ),
             closing_tag=HTML('</div>'),
         )
 
         # Add the option to set a goal to earn a certificate,
         # complete the course or explore the course
-        goal_options = [GOAL_KEY_CHOICES.certify, GOAL_KEY_CHOICES.complete, GOAL_KEY_CHOICES.explore]
-        for goal_key in goal_options:
-            goal_text = GOAL_KEY_CHOICES[goal_key]
+        course_goal_keys = course_goal_options.keys()
+        course_goal_keys.remove('unsure')
+        for goal_key in course_goal_keys:
+            goal_text = course_goal_options[goal_key]
             goal_choices_html += HTML(
                 '{initial_tag}{goal_text}{closing_tag}'
             ).format(
@@ -176,7 +177,7 @@ def _register_course_home_messages(request, course_id, user_access, course_start
                     aria_label_choice=Text(_("Set goal to: {goal_text}")).format(
                         goal_text=Text(_(goal_text))
                     ),
-                    col_sel='col-' + str(int(math.floor(12 / len(goal_options))))
+                    col_sel='col-' + str(int(math.floor(12 / len(course_goal_keys))))
                 ),
                 goal_text=goal_text,
                 closing_tag=HTML('</button>')
