@@ -40,7 +40,7 @@ class CourseGoal(models.Model):
         unique_together = ("user", "course_key")
 
 
-@receiver(models.signals.post_save, sender=CourseEnrollment, dispatch_uid="store_course_goal_on_enroll")
+@receiver(models.signals.post_save, sender=CourseEnrollment, dispatch_uid="create_course_goal_on_enroll")
 def set_course_goal_verified(sender, instance, **kwargs):  # pylint: disable=unused-argument, invalid-name
     """Set the course goal to certify when the user enrolls as a verified user. """
     ## If the user enrolls in a verified state or upgrades, create a course goal
