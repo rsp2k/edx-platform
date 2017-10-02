@@ -175,7 +175,7 @@ class TestCourseHomePage(CourseHomePageTestCase):
         course_home_url(self.course)
 
         # Fetch the view and verify the query counts
-        with self.assertNumQueries(46, table_blacklist=QUERY_COUNT_TABLE_BLACKLIST):
+        with self.assertNumQueries(45, table_blacklist=QUERY_COUNT_TABLE_BLACKLIST):
             with check_mongo_calls(4):
                 url = course_home_url(self.course)
                 self.client.get(url)
@@ -461,12 +461,18 @@ class TestCourseHomePageAccess(CourseHomePageTestCase):
         self.assertNotContains(response, TEST_COURSE_GOAL_UPDATE_FIELD)
 
         # Verify that enrolled users that have not set a course goal are shown a hidden update goal selection field.
-        CourseEnrollment.enroll(user, verifiable_course.id)
+        enrollment = CourseEnrollment.enroll(user, verifiable_course.id)
         response = self.client.get(course_home_url(verifiable_course))
         self.assertContains(response, TEST_COURSE_GOAL_UPDATE_FIELD_HIDDEN)
 
         # Verify that enrolled users that have set a course goal are shown a visible update goal selection field.
         add_course_goal(user, verifiable_course.id, COURSE_GOAL_DISMISS_OPTION)
+        response = self.client.get(course_home_url(verifiable_course))
+        self.assertContains(response, TEST_COURSE_GOAL_UPDATE_FIELD)
+        self.assertNotContains(response, TEST_COURSE_GOAL_UPDATE_FIELD_HIDDEN)
+
+        # Verify that enrolled and verified users are shown the update goal selection field.enrollment = CourseEnrollment.objects.get(user=user, course_id=course_key)
+        CourseEnrollment.update_enrollment(enrollment, is_active=True, mode=CourseMode.VERIFIED)
         response = self.client.get(course_home_url(verifiable_course))
         self.assertContains(response, TEST_COURSE_GOAL_UPDATE_FIELD)
         self.assertNotContains(response, TEST_COURSE_GOAL_UPDATE_FIELD_HIDDEN)

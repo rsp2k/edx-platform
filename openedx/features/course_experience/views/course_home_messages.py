@@ -5,7 +5,6 @@ import math
 from datetime import datetime
 
 from babel.dates import format_date, format_timedelta
-from django.conf import settings
 from django.contrib import auth
 from django.template.loader import render_to_string
 from django.utils.http import urlquote_plus
@@ -20,6 +19,7 @@ from lms.djangoapps.course_goals.api import get_course_goal, get_course_goal_opt
 from openedx.core.djangoapps.plugin_api.views import EdxFragmentView
 from openedx.core.djangolib.markup import HTML, Text
 from openedx.features.course_experience import CourseHomeMessages
+from student.models import CourseEnrollment
 
 
 class CourseHomeMessageFragmentView(EdxFragmentView):
@@ -134,7 +134,8 @@ def _register_course_home_messages(request, course_id, user_access, course_start
     # verified statuses.
     user_goal = get_course_goal(auth.get_user(request), course_key)
     course_goal_options = get_course_goal_options()
-    if has_course_goal_permission(request, course_id, user_access) and not user_goal:
+    is_already_verified = CourseEnrollment.is_enrolled_as_verified(request.user, course_key)
+    if has_course_goal_permission(request, course_id, user_access) and not is_already_verified and not user_goal:
         goal_choices_html = Text(_(
             'To start, set a course goal by selecting the option below that best describes '
             'your learning plan. {goal_options_container}'

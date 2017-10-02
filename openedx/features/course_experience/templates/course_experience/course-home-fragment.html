@@ -110,7 +110,7 @@ from openedx.features.course_experience import UNIFIED_COURSE_TAB_FLAG, SHOW_REV
                             <h3 class="title hd-6">${_("My goal: ")}</h3>
                             <select>
                                 % for goal, goal_text in goal_options.items():
-                                    <option value="${goal}" ${"selected" if cur_goal and cur_goal.goal_key == goal else ""}>${goal_text}</option>
+                                    <option value="${goal}" ${"selected" if current_goal and current_goal.goal_key == goal else ""}>${goal_text}</option>
                                 % endfor
                             </select>
                             <span class="icon fa fa-pencil" aria-hidden="true"></span>

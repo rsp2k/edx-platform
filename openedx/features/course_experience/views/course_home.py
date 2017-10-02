@@ -16,8 +16,7 @@ from courseware.courses import (
     get_course_info_section,
     get_course_with_access,
 )
-from lms.djangoapps.course_goals.api import get_course_goal, get_goal_api, has_course_goal_permission
-from lms.djangoapps.course_goals.models import CourseGoal
+from lms.djangoapps.course_goals.api import get_course_goal, has_course_goal_permission, get_course_goal_options, get_goal_api
 from lms.djangoapps.courseware.exceptions import CourseAccessRedirect
 from lms.djangoapps.courseware.views.views import CourseTabView
 from opaque_keys.edx.keys import CourseKey
@@ -161,7 +160,7 @@ class CourseHomeFragmentView(EdxFragmentView):
 
         # Grab the current course goal and the acceptable course goal keys mapped to translated values
         current_goal = get_course_goal(request.user, course_key)
-        goal_options = {goal_key: goal_text for goal_key, goal_text in CourseGoal.GOAL_KEY_CHOICES}
+        goal_options = get_course_goal_options()
 
         # Get the course goals api endpoint
         goal_api_url = get_goal_api(request)

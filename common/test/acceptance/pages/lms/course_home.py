@@ -39,7 +39,7 @@ class CourseHomePage(CoursePage):
 
     def update_course_goal(self, valid=True):
         """ Update course goal select element with new goal_key. """
-        new_goal_key = 'explore' if valid else 'invalid_key'
+        new_goal_key = 'certify' if valid else 'invalid_key'
         self.browser.execute_script('$(".current-goal select").val({key}).trigger("change");'.format(key=new_goal_key))
         self.wait_for_ajax()
 
