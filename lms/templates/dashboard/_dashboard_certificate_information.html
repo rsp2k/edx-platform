@@ -3,8 +3,8 @@
 <%!
 from django.utils.translation import ugettext as _
 from openedx.core.djangolib.markup import HTML, Text
+from openedx.core.djangoapps.certificates.api import certificates_viewable_for_course
 from course_modes.models import CourseMode
-from openedx.core.djangoapps.certificates.api import display_date_for_certificate
 from datetime import datetime
 from pytz import UTC
 %>
@@ -23,7 +23,7 @@ from pytz import UTC
 <%
 if cert_status['status'] == 'generating':
     status_css_class = 'course-status-certrendering'
-elif cert_status['status'] == 'ready':
+elif cert_status['status'] == 'downloadable':
     status_css_class = 'course-status-certavailable'
 elif cert_status['status'] == 'notpassing':
     status_css_class = 'course-status-certnotavailable'
@@ -31,9 +31,18 @@ else:
     status_css_class = 'course-status-processing'
 %>
 
-% if not cert_status['status'] == 'processing':
+% if cert_status['status'] != 'processing':
   <div class="message message-status ${status_css_class} is-shown">
-  % if cert_status['status'] in ('generating', 'ready', 'notpassing', 'restricted', 'auditing', 'unverified'):
+  % if (cert_status['status'] == 'generating' or cert_status['status'] == 'downloadable') and not cert_status['certificate_message_viewable']:
+    <p class="message-copy">
+      <%
+        certificate_available_date_string = course_overview.certificate_available_date.strftime('%Y-%m-%dT%H:%M:%S%z')
+        container_string = _("Your certificate will be available on or before {date}")
+        format = 'shortDate'
+      %>
+      <span class="info-date-block localized-datetime" data-language="${user_language}" data-timezone="${user_timezone}" data-datetime="${certificate_available_date_string}" data-format=${format} data-string="${container_string}"></span>
+    </p>
+  % elif cert_status['status'] in ('generating', 'downloadable', 'notpassing', 'restricted', 'auditing', 'unverified'):
     <p class="message-copy">${_("Your final grade:")}
     <span class="grade-value">${"{0:.0f}%".format(float(cert_status['grade'])*100)}</span>.
       % if cert_status['status'] == 'notpassing':
@@ -56,10 +65,6 @@ else:
         ${Text(_("Your certificate was not issued because you do not have a current verified identity with {platform_name}. ")).format(platform_name=settings.PLATFORM_NAME)}
         <a href="${reverify_link}"> ${Text(_("Verify your identity now."))}</a>
       </p>
-      % elif cert_status['status'] == 'generating' or cert_status['status'] == 'ready' and datetime.now(UTC) < course_overview.certificate_available_date:
-          <p class="message-copy">
-            ${_("Your certificate will be available on or before {date}").format(date=course_overview.certificate_available_date)}
-          </p>
       % endif
     </p>
   % endif
@@ -115,7 +120,7 @@ else:
     </ul>
     % endif
 
-    % if cert_status['show_download_url'] and enrollment.mode == 'verified' and cert_status['mode'] == 'honor':
+    % if cert_status['show_download_url'] and cert_status['certificate_message_viewable'] and enrollment.mode == 'verified' and cert_status['mode'] == 'honor':
     <div class="certificate-explanation">
         ${_('Since we did not have a valid set of verification photos from you when your {cert_name_long} was generated, we could not grant you a verified {cert_name_short}. An honor code {cert_name_short} has been granted instead.').format(cert_name_short=cert_name_short, cert_name_long=cert_name_long)}
     </div>
