@@ -42,7 +42,7 @@ class TestCourseGoalsAPI(EventTrackingTestCase, SharedModuleStoreTestCase):
 
         current_goals = CourseGoal.objects.filter(user=self.user, course_key=self.course.id)
         self.assertEqual(len(current_goals), 1)
-        self.assertEqual(current_goals[0]['goal_key'], 'certify')
+        self.assertEqual(current_goals[0].goal_key, 'certify')
 
     def test_add_invalid_goal(self):
         """ Ensures an incorrectly formatted post does not succeed. """
@@ -59,7 +59,7 @@ class TestCourseGoalsAPI(EventTrackingTestCase, SharedModuleStoreTestCase):
 
         current_goals = CourseGoal.objects.filter(user=self.user, course_key=self.course.id)
         self.assertEqual(len(current_goals), 1)
-        self.assertEqual(current_goals[0]['goal_key'], 'unsure')
+        self.assertEqual(current_goals[0].goal_key, 'unsure')
 
     def post_course_goal(self, valid=True, goal_key='certify'):
         """
