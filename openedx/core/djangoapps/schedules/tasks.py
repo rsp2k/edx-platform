@@ -173,6 +173,7 @@ def _add_upsell_button_to_email_template(a_user, a_schedule, template_context):
 
     template_context['show_upsell'] = upgrade_link is not None
     template_context['upsell_link'] = upgrade_link
+    template_context['user_schedule_upgrade_deadline_time'] = upgrade_date
 
 
 def encode_url(url):
