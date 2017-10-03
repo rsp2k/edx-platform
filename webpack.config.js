@@ -27,6 +27,7 @@ var wpconfig = {
         CourseHome: './openedx/features/course_experience/static/course_experience/js/CourseHome.js',
         CourseOutline: './openedx/features/course_experience/static/course_experience/js/CourseOutline.js',
         CourseSock: './openedx/features/course_experience/static/course_experience/js/CourseSock.js',
+        Currency: './openedx/features/course_experience/static/course_experience/js/currency.js',
         CourseTalkReviews: './openedx/features/course_experience/static/course_experience/js/CourseTalkReviews.js',
         Enrollment: './openedx/features/course_experience/static/course_experience/js/Enrollment.js',
         LatestUpdate: './openedx/features/course_experience/static/course_experience/js/LatestUpdate.js',

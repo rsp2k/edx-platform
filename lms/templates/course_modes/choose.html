@@ -50,9 +50,24 @@ from openedx.core.djangolib.markup import HTML, Text
             % endif
         });
     </script>
-    <%static:require_module module_name="js/currency/currency_factory" class_name="CurrencyFactory">
-    CurrencyFactory();
-    </%static:require_module>
+      <script type="text/javascript">
+        (function (require) {
+            var wc = require(['which-country']);
+            console.log('hai2');
+            var countryCode = wc([-71.09248360000001, 42.3654326]);
+            console.log(countryCode);
+        }).call(this, require || RequireJS.require);
+    </script>
+    <script type="text/javascript">
+        RequireJS.require(['which-country'], function (wc) {
+            console.log('hai');
+            var countryCode = wc([-71.09248360000001, 42.3654326]);
+            console.log(countryCode);
+        });
+    </script>
+    <%static:webpack entry="Currency">
+        new Currency();
+    </%static:webpack>
 
 </%block>
 
