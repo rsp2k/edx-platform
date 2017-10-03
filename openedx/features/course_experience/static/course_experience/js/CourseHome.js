@@ -31,18 +31,20 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
     });
 
     // Course goal editing elements
+    const $goalSection = $('.section-goals');
     const $editGoalIcon = $('.section-goals .edit-icon');
     const $currentGoalText = $('.section-goals .goal');
     const $goalSelect = $('.section-goals .edit-goal-select');
     const $responseIndicator = $('.section-goals .response-icon');
 
-    // Switch to editing mode when the edit icon is clicked
-    $editGoalIcon.on('click', (event) => {
-      $editGoalIcon.toggle();
-      $goalSelect.toggle();
-      $currentGoalText.toggle();
-      $responseIndicator.removeClass().addClass('response-icon');
-      $goalSelect.focus();
+    // Switch to editing mode when the goal section is clicked
+    $goalSection.on('click', (event) => {
+      if (!$(event.target).hasClass('edit-goal-select')) {
+        $goalSelect.toggle();
+        $currentGoalText.toggle();
+        $responseIndicator.removeClass().addClass('response-icon');
+        $goalSelect.focus();
+      }
     });
 
     // Trigger click event on enter press for accessibility purposes
@@ -58,6 +60,7 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
       $editGoalIcon.toggle();
       $goalSelect.toggle();
       $currentGoalText.toggle();
+      $editGoalIcon.removeClass().addClass('edit-icon');
       $responseIndicator.removeClass().addClass('response-icon fa fa-spinner fa-spin');
       $.ajax({
         method: 'POST',
@@ -80,6 +83,7 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
           // Only show response icon indicator for 4 seconds.test
           setTimeout(() => {
             $responseIndicator.removeClass().addClass('response-icon');
+            $editGoalIcon.removeClass().addClass('edit-icon fa fa-pencil').show();
           }, 4000);
         }
       });

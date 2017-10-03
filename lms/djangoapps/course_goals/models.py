@@ -9,6 +9,7 @@ from openedx.core.djangoapps.xmodule_django.models import CourseKeyField
 from model_utils import Choices
 
 from .api import add_course_goal, remove_course_goal
+from course_modes.models import CourseMode
 from student.models import CourseEnrollment
 
 
@@ -41,12 +42,13 @@ class CourseGoal(models.Model):
 
 
 @receiver(models.signals.post_save, sender=CourseEnrollment, dispatch_uid="update_course_goal_on_enroll_change")
-def set_course_goal_verified(sender, instance, **kwargs):  # pylint: disable=unused-argument, invalid-name
+def update_course_goal_on_enroll_change(sender, instance, **kwargs):  # pylint: disable=unused-argument, invalid-name
     """
-    Set the course goal to certify when the user enrolls as a verified user.
-    Remove the course goal when the user's enrollment is no longer active.
+    Updates goals as follows on enrollment changes:
+    1) Set the course goal to 'certify' when the user enrolls as a verified user.
+    2) Remove the course goal when the user's enrollment is no longer active.
     """
-    if instance.mode == 'verified':
-        add_course_goal(instance.user, instance.course_id, 'certify')
     if not instance.is_active:
         remove_course_goal(instance.user, instance.course_id)
+    elif instance.mode == CourseMode.VERIFIED:
+        add_course_goal(instance.user, instance.course_id, GOAL_KEY_CHOICES.certify)

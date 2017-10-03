@@ -157,6 +157,7 @@
     border-radius: 5px;
     position: relative;
     width: 100%;
+    cursor: pointer;
     margin-bottom: $baseline/2;
 
     &.hidden {
@@ -168,10 +169,17 @@
       background-color: transparent;
     }
 
+    &:hover {
+      .edit-icon {
+        display: inline;
+      }
+    }
+
     .edit-icon {
       @include right($baseline/4);
+      display: none;
       position: absolute;
-      top: $baseline/4;
+      top: $baseline*0.75;
       cursor: pointer;
       border: transparent;
       background-color: transparent;
@@ -195,7 +203,7 @@
       .response-icon {
         @include margin-left($baseline/4);
         @include right($baseline/2);
-        bottom: $baseline/4;
+        top: $baseline*0.75;
         position: absolute;
 
         &.fa-check {
