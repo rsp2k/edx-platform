@@ -450,6 +450,7 @@ class TestCourseHomePageAccess(CourseHomePageTestCase):
         1) Unenrolled users are not shown the update goal selection field.
         2) Enrolled users are not shown the update goal selection field if they have not yet set a course goal.
         3) Enrolled users are shown the update goal selection field if they have set a course goal.
+        4) Enrolled users in the verified track are shown the update goal selection field.
         """
         # Create a course with a verified track.
         verifiable_course = CourseFactory.create()
@@ -471,7 +472,7 @@ class TestCourseHomePageAccess(CourseHomePageTestCase):
         self.assertContains(response, TEST_COURSE_GOAL_UPDATE_FIELD)
         self.assertNotContains(response, TEST_COURSE_GOAL_UPDATE_FIELD_HIDDEN)
 
-        # Verify that enrolled and verified users are shown the update goal selection field.enrollment = CourseEnrollment.objects.get(user=user, course_id=course_key)
+        # Verify that enrolled and verified users are shown the update goal selection
         CourseEnrollment.update_enrollment(enrollment, is_active=True, mode=CourseMode.VERIFIED)
         response = self.client.get(course_home_url(verifiable_course))
         self.assertContains(response, TEST_COURSE_GOAL_UPDATE_FIELD)

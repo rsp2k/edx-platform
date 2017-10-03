@@ -57,7 +57,7 @@ def remove_course_goal(user, course_id):
         course_goal.delete()
 
 
-def get_goal_api(request):
+def get_goal_api_url(request):
     """
     Returns the endpoint for accessing REST API.
     """

@@ -30,13 +30,35 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
       );
     });
 
-    // Course goal edit behavior
-    const $goalSelect = $('.section-goals select');
-    const $iconIndicator = $('.section-goals .icon');
+    // Course goal editing elements
+    const $editGoalIcon = $('.section-goals .edit-icon');
+    const $currentGoalText = $('.section-goals .goal');
+    const $goalSelect = $('.section-goals .edit-goal-select');
+    const $responseIndicator = $('.section-goals .response-icon');
+
+    // Switch to editing mode when the edit icon is clicked
+    $editGoalIcon.on('click', (event) => {
+      $editGoalIcon.toggle();
+      $goalSelect.toggle();
+      $currentGoalText.toggle();
+      $responseIndicator.removeClass().addClass('response-icon');
+      $goalSelect.focus();
+    });
+
+    // Trigger click event on enter press for accessibility purposes
+    $(document.body).on('keyup', '.section-goals .edit-icon', (event) => {
+      if (event.which === 13) {
+        $(event.target).trigger('click');
+      }
+    });
+
+    // Send an ajax request to update the course goal
     $goalSelect.on('change', (event) => {
-      // Send an ajax request to update the course goal
       const newGoalKey = $(event.target).val();
-      $iconIndicator.removeClass().addClass('icon fa fa-spinner fa-pulse');
+      $editGoalIcon.toggle();
+      $goalSelect.toggle();
+      $currentGoalText.toggle();
+      $responseIndicator.removeClass().addClass('response-icon fa fa-spinner fa-spin');
       $.ajax({
         method: 'POST',
         url: options.goalApiUrl,
@@ -47,18 +69,20 @@ export class CourseHome {  // eslint-disable-line import/prefer-default-export
           user: options.username,
         },
         dataType: 'json',
-        success: () => {
-          $iconIndicator.removeClass().addClass('icon fa fa-check');
-          $goalSelect.blur();
+        success: (data) => {
+          $currentGoalText.find('.text').text(data.goal_text);
+          $responseIndicator.removeClass().addClass('response-icon fa fa-check');
         },
-        error: () => {
-          $iconIndicator.removeClass().addClass('icon fa fa-close');
+        error: (data) => {
+          $responseIndicator.removeClass().addClass('response-icon fa fa-close');
         },
+        complete: () => {
+          // Only show response icon indicator for 4 seconds.test
+          setTimeout(() => {
+            $responseIndicator.removeClass().addClass('response-icon');
+          }, 4000);
+        }
       });
-    });
-
-    $iconIndicator.click(() => {
-      $goalSelect.focus();
     });
 
     // Dismissibility for in course messages

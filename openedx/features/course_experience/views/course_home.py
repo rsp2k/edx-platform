@@ -16,7 +16,7 @@ from courseware.courses import (
     get_course_info_section,
     get_course_with_access,
 )
-from lms.djangoapps.course_goals.api import get_course_goal, has_course_goal_permission, get_course_goal_options, get_goal_api
+from lms.djangoapps.course_goals.api import get_course_goal, has_course_goal_permission, get_course_goal_options, get_goal_api_url
 from lms.djangoapps.courseware.exceptions import CourseAccessRedirect
 from lms.djangoapps.courseware.views.views import CourseTabView
 from opaque_keys.edx.keys import CourseKey
@@ -163,7 +163,7 @@ class CourseHomeFragmentView(EdxFragmentView):
         goal_options = get_course_goal_options()
 
         # Get the course goals api endpoint
-        goal_api_url = get_goal_api(request)
+        goal_api_url = get_goal_api_url(request)
 
         # Grab the course home messages fragment to render any relevant django messages
         course_home_message_fragment = CourseHomeMessageFragmentView().render_to_fragment(

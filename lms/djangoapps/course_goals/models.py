@@ -8,17 +8,17 @@ from django.utils.translation import ugettext_lazy as _
 from openedx.core.djangoapps.xmodule_django.models import CourseKeyField
 from model_utils import Choices
 
+from .api import add_course_goal, remove_course_goal
+from student.models import CourseEnrollment
+
 
 # Each goal is represented by a goal key and a string description.
 GOAL_KEY_CHOICES = Choices(
-    ('certify', _('Earn a certificate.')),
-    ('complete', _('Complete the course.')),
-    ('explore', _('Explore the course.')),
-    ('unsure', _('Not sure yet.')),
+    ('certify', _('Earn a certificate')),
+    ('complete', _('Complete the course')),
+    ('explore', _('Explore the course')),
+    ('unsure', _('Not sure yet')),
 )
-
-from .api import add_course_goal, remove_course_goal
-from student.models import CourseEnrollment
 
 
 class CourseGoal(models.Model):
@@ -40,15 +40,13 @@ class CourseGoal(models.Model):
         unique_together = ("user", "course_key")
 
 
-@receiver(models.signals.post_save, sender=CourseEnrollment, dispatch_uid="create_course_goal_on_enroll")
+@receiver(models.signals.post_save, sender=CourseEnrollment, dispatch_uid="update_course_goal_on_enroll_change")
 def set_course_goal_verified(sender, instance, **kwargs):  # pylint: disable=unused-argument, invalid-name
-    """Set the course goal to certify when the user enrolls as a verified user. """
-    ## If the user enrolls in a verified state or upgrades, create a course goal
+    """
+    Set the course goal to certify when the user enrolls as a verified user.
+    Remove the course goal when the user's enrollment is no longer active.
+    """
     if instance.mode == 'verified':
         add_course_goal(instance.user, instance.course_id, 'certify')
-
-
-@receiver(models.signals.post_delete, sender=CourseEnrollment, dispatch_uid="remove_course_goal_on_unenroll")
-def remove_course_goal_on_unenroll(sender, instance, **kwargs):  # pylint: disable=unused-argument, invalid-name
-    """Remove course goal on unenroll. """
-    remove_course_goal(instance.user, instance.course_id)
+    if not instance.is_active:
+        remove_course_goal(instance.user, instance.course_id)

@@ -16,8 +16,9 @@ export class CourseGoals {  // eslint-disable-line import/prefer-default-export
         },
         dataType: 'json',
         success: (data) => { // LEARNER-2522 will address the success message
-          $('.section-goals select').val(data.goal_key);
           $('.section-goals').slideDown();
+          $('.section-goals .goal').text(data.goal_text);
+          $('.section-goals select').val(data.goal_key);
           const successMsg = gettext('Thank you for setting your course goal!');
           // xss-lint: disable=javascript-jquery-html
           $('.message-content').html(`<div class="success-message">${successMsg}</div>`);

@@ -151,55 +151,65 @@
 
   // Course Goal Updates
   .section-goals {
+    @include float(left);
     border: 1px solid $lms-border-color;
-    padding: $baseline*0.75;
+    padding: $baseline*0.75 $baseline*0.75 $baseline*0.25;
     border-radius: 5px;
     position: relative;
+    width: 100%;
+    margin-bottom: $baseline/2;
 
     &.hidden {
       display: none;
     }
 
-    .current-goal .title {
-      @include float(left); // For RTL purposes
-      @include margin-right($baseline/4);
-    }
-
-    select {
-      border: none;
+    .edit-goal-select {
+      display: none;
       background-color: transparent;
-      cursor: pointer;
     }
 
-    .icon {
+    .edit-icon {
       @include right($baseline/4);
       position: absolute;
+      top: $baseline/4;
+      cursor: pointer;
+      border: transparent;
+      background-color: transparent;
 
-
-      &.fa-check {
-        color: $success-color;
-      }
-
-      &.fa-close {
-        color: $error-color;
-      }
-    }
-
-    .fa-pencil {
-      display: none; // Only show the edit icon on hover
-    }
-
-    &:hover {
-      background-color: $table-bg-accent;
-
-      .fa-pencil {
-        display: inline;
+      &:hover {
+        color: $lms-border-color;
       }
     }
-  }
 
-  .section-tools li:not(:first-child) {
-    margin-top: ($baseline / 5);
+    .current-goal-container {
+      .title {
+        @include float(left);
+        @include margin-right($baseline/4);
+      }
+
+      .goal {
+        @include float(left);
+        @include padding-left($baseline*0.4);
+
+      }
+      .response-icon {
+        @include margin-left($baseline/4);
+        @include right($baseline/2);
+        bottom: $baseline/4;
+        position: absolute;
+
+        &.fa-check {
+          color: $success-color;
+        }
+
+        &.fa-close {
+          color: $error-color;
+        }
+      }
+    }
+    .section-tools li:not(:first-child) {
+      margin-top: ($baseline / 5);
+    }
   }
 }
 

@@ -57,12 +57,13 @@ class CourseGoalViewSet(viewsets.ModelViewSet):
     def create(self, post_data):
         """ Create a new goal if one does not exist, otherwise update the existing goal. """
         # Ensure goal_key is valid
+        goal_options = get_course_goal_options()
         goal_key = post_data.data['goal_key']
-        if goal_key not in get_course_goal_options():
+        if goal_key not in goal_options:
             return Response(
                 'Provided goal key, {goal_key}, is not a valid goal key (options= {goal_options}).'.format(
                     goal_key=goal_key,
-                    goal_options=get_course_goal_options(),
+                    goal_options=goal_options,
                 ),
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -88,7 +89,10 @@ class CourseGoalViewSet(viewsets.ModelViewSet):
                 course_key=course_key,
                 goal_key=goal_key,
             )
-        data = {'goal_key': str(goal_key)}
+        data = {
+            'goal_key': str(goal_key),
+            'goal_text': str(goal_options[goal_key]),
+        }
         return JsonResponse(data, content_type="application/json", status=(200 if goal else 201))
 
 
