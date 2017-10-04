@@ -1089,7 +1089,6 @@ class CapaModuleTest(unittest.TestCase):
             module.rescore(only_if_higher=True)
         self.assertEqual(module.get_score(), (1, 1))
 
-
         # Expect that the number of attempts is not incremented
         self.assertEqual(module.attempts, 1)
 
