@@ -1633,8 +1633,8 @@ class CapaMixin(ScorableXBlockMixin, CapaFields):
         # rescoring should have no effect on attempts, so don't
         # need to increment here, or mark done.  Just save.
         self.set_state_from_lcp()
-        old_percentage = orig_score.raw_earned / orig_score.raw_possible
-        new_percentage = calculated_score.raw_earned / calculated_score.raw_possible
+        old_percentage = float(orig_score.raw_earned) / float(orig_score.raw_possible)
+        new_percentage = float(calculated_score.raw_earned) / float(calculated_score.raw_possible)
         # score should not be set if only_if_higher flag is set and
         # old_percentage is greater than new percentage
         if not (only_if_higher and old_percentage > new_percentage):
