@@ -883,7 +883,7 @@ class XModule(HTMLSnippet, XModuleMixin):
         response_data = self.handle_ajax(suffix, request_post)
 
         try:
-            return Response(response_data, content_type='application/json')
+            return Response(response_data, content_type='application/json', charset='UTF-8')
         except TypeError:
             request_environ = getattr(request, 'environ')
             log.exception(
